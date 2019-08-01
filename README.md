@@ -1,1 +1,1 @@
-# shoot-for-the-stars
+# shoot for the stars
