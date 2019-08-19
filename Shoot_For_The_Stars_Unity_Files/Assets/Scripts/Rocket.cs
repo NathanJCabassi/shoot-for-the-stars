@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using UnityEditor.SceneManagement;
 using UnityEngine;
 
 public class Rocket : MonoBehaviour
@@ -31,7 +29,6 @@ public class Rocket : MonoBehaviour
         switch (collision.gameObject.tag)
         {
             case "Friendly":
-                print("ok"); //todo remove
                 break;
             case "Fuel":
                 print("Fuel"); //todo remove
