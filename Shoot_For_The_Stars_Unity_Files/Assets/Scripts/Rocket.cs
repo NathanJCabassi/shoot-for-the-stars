@@ -9,6 +9,8 @@ public class Rocket : MonoBehaviour
     Rigidbody rigidBody;
     AudioSource audioSource;
 
+    enum State { Alive, Dying, Transcending}
+    State state = State.Alive;
 
     // Start is called before the first frame update
     void Start()
@@ -30,15 +32,22 @@ public class Rocket : MonoBehaviour
         {
             case "Friendly":
                 break;
-            case "Fuel":
-                print("Fuel"); //todo remove
+            case "Finish":
+
+                Invoke("LoadNextScene", 1f); //peramiterize time
                 break;
             default:
                 print("Dead"); //todo remove & kill player
+                EditorSceneManager.LoadScene(0);
                 break;
         }
         
        
+    }
+
+    private static void LoadNextScene()
+    {
+        EditorSceneManager.LoadScene(1);// todo allow for more than 2 Levels
     }
 
     private void Rotate()
