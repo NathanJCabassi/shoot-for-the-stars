@@ -20,34 +20,49 @@ public class Rocket : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
-    {
-        Rotate();
-        Thrust();
+    void Update() {
+        //todo stop sound on death
+        if (state == State.Alive)
+        {
+            Rotate();
+            Thrust();
+        }
+        
     }
 
     void OnCollisionEnter(Collision collision)
     {
+        if (state != State.Alive)
+        {
+            return;
+        }
+
         switch (collision.gameObject.tag)
         {
             case "Friendly":
                 break;
             case "Finish":
-
-                Invoke("LoadNextScene", 1f); //peramiterize time
+                state = State.Transcending;
+                Invoke("LoadNextLevel", 1f); //peramiterize time
                 break;
             default:
-                print("Dead"); //todo remove & kill player
-                EditorSceneManager.LoadScene(0);
+                print("hit something deadly");
+                state = State.Dying;
+                Invoke("LoadFirstLevel", 1f); //peramiterize time
                 break;
         }
         
        
     }
 
-    private static void LoadNextScene()
+    private void LoadNextLevel()
     {
         EditorSceneManager.LoadScene(1);// todo allow for more than 2 Levels
+    }
+
+    private void LoadFirstLevel()
+    {
+        EditorSceneManager.LoadScene(0);// todo allow for more than 2 Levels
     }
 
     private void Rotate()
