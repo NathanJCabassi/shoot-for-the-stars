@@ -5,6 +5,9 @@ public class Rocket : MonoBehaviour
 {
     [SerializeField] float rcsThrust = 100f;
     [SerializeField] float mainThrust = 100f;
+    [SerializeField] AudioClip mainEngine;
+    [SerializeField] AudioClip death;
+    [SerializeField] AudioClip nextLevel;
 
     Rigidbody rigidBody;
     AudioSource audioSource;
@@ -24,8 +27,8 @@ public class Rocket : MonoBehaviour
         //todo stop sound on death
         if (state == State.Alive)
         {
-            Rotate();
-            Thrust();
+            RespondToRotateInput();
+            RespondToThrustInput();
         }
         
     }
@@ -43,11 +46,12 @@ public class Rocket : MonoBehaviour
                 break;
             case "Finish":
                 state = State.Transcending;
+                audioSource.PlayOneShot(nextLevel);
                 Invoke("LoadNextLevel", 1f); //peramiterize time
                 break;
             default:
-                print("hit something deadly");
                 state = State.Dying;
+                audioSource.PlayOneShot(death);
                 Invoke("LoadFirstLevel", 1f); //peramiterize time
                 break;
         }
@@ -65,7 +69,7 @@ public class Rocket : MonoBehaviour
         EditorSceneManager.LoadScene(0);// todo allow for more than 2 Levels
     }
 
-    private void Rotate()
+    private void RespondToRotateInput()
     {
         rigidBody.angularVelocity = Vector3.zero;
 
@@ -80,19 +84,24 @@ public class Rocket : MonoBehaviour
         }
     }
 
-    private void Thrust()
+    private void RespondToThrustInput()
     {
         if (Input.GetKey(KeyCode.Space))// can thrust while rotating
         {
-            rigidBody.AddRelativeForce(Vector3.up * mainThrust);
-            if (!audioSource.isPlaying)
-            {
-                audioSource.Play();
-            }
+            ApplyThrust();
         }
         else
         {
             audioSource.Stop();
+        }
+    }
+
+    private void ApplyThrust()
+    {
+        rigidBody.AddRelativeForce(Vector3.up * mainThrust);
+        if (!audioSource.isPlaying)
+        {
+            audioSource.PlayOneShot(mainEngine);
         }
     }
 }
