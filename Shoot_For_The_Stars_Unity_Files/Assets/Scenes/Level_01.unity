@@ -2676,7 +2676,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   movementVector: {x: 0, y: 10, z: 0}
-  movementFactor: 0
+  peroid: 2
 --- !u!1 &2079888014
 GameObject:
   m_ObjectHideFlags: 0
